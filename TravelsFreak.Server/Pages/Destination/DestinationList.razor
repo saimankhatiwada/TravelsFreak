@@ -1,0 +1,79 @@
+﻿@page "/Destination"
+@inject IDestinationsRepository _DestinationRepository
+
+<PageTitle>Destination</PageTitle>
+
+<div class="row mt-4">
+    <div class="col-6">
+        <h4 class="card-title text-info">Destination List</h4>
+    </div>
+    <div class="col-4 offset-2">
+        <NavLink href="/Destination/Create" class="btn btn-info shadow-sm form-control" style="border:2px solid #0d1b6b">Add New Destination</NavLink>
+    </div>
+    <div class="col-12 p-3">
+        @if (Destinations.Any())
+        {
+            <table class="table table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>Destination</th>
+                        <th>Location</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var destination in Destinations)
+                    {
+                        <tr>
+                            <td>
+                                @destination.DestinationTittle
+                            </td>
+                            <td>
+                                @destination.Location
+                            </td>
+                            <td>
+                                <NavLink href="@($"/Destination/Edit/{destination.Id}")" class="btn-primary btn">Edit</NavLink>
+                                <button class="btn btn-danger" >Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            if(IsLoading)
+            {
+                <div class="text-center">
+                    <img src="Loading/loading.gif">
+                </div>
+            }
+            else
+            {
+                <p class="alert">No records Found</p>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private IEnumerable<DestinationsDTO> Destinations { get; set; } = new List<DestinationsDTO>();
+    public bool IsLoading { get; set; }
+
+    public async Task LoadDestination()
+    {
+        IsLoading = true;
+        StateHasChanged();
+        Destinations = await _DestinationRepository.GetAll();
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await LoadDestination();
+        }
+    }
+}

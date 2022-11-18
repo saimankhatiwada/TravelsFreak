@@ -1,0 +1,98 @@
+﻿@page "/Destination/Create"
+@page "/Destination/Edit/{id:int}"
+
+@inject IDestinationsRepository _DestinationRepository
+@inject NavigationManager _NavigationManager
+
+<PageTitle>Destination: @Title</PageTitle>
+
+<div class="card mx-auto col-md-5 mb-5 rounded shadow-sm" style="border:2px solid #0d1b6b">
+    <div class="card-body">
+        <h3 class="card-title text-primary mb-3 ml-3">Destination: @Title</h3>
+        <div class="col-12">
+            @if (IsLoading)
+            {
+                <div class="text-center">
+                    <img src="Loading/loading.gif">
+                </div>
+            }
+            else
+            {
+                <EditForm Model="Destinations" OnValidSubmit="UpsertDestination">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label>Destination</label>
+                        <InputText @bind-Value="Destinations.DestinationTittle" class="form-control" style="border:1px solid #0d1b6b"></InputText>
+                        <ValidationMessage For="()=>Destinations.DestinationTittle"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <InputText @bind-Value="Destinations.Location" class="form-control" style="border:1px solid #0d1b6b"></InputText>
+                        <ValidationMessage For="()=>Destinations.Location"></ValidationMessage>
+                    </div>
+                    <div class="form-group py-2">
+                        <button class="btn btn-primary" style="border:1px solid #0d1b6b">@Title</button>
+                        <NavLink href="/Destination" class="btn btn-secondary" style="border:1px solid #0d1b6b">Back</NavLink>
+                    </div>
+
+                </EditForm>
+            }
+
+        </div>
+
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private string Title { get; set; } = "Create";
+
+    public DestinationsDTO Destinations { get; set; } = new DestinationsDTO();
+
+    public bool IsLoading { get; set; } /*= true;*/
+
+    private async Task LoadDestinationById()
+    {
+        IsLoading = true;
+        StateHasChanged();
+        Destinations = await _DestinationRepository.Get(Id);
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            if(Id == 0)
+            {
+                IsLoading = false;
+                StateHasChanged();
+            }
+            else
+            {
+                Title = "Update";
+                await LoadDestinationById();
+            }
+        }
+    }
+
+    private async Task UpsertDestination()
+    {
+        if(Id == 0)
+        {
+            await _DestinationRepository.Create(Destinations);
+            _NavigationManager.NavigateTo("/Destination");
+        }
+        else
+        {
+            await _DestinationRepository.Update(Destinations);
+            _NavigationManager.NavigateTo("/Destination");
+        }
+
+    }
+}
