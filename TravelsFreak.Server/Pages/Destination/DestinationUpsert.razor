@@ -2,6 +2,7 @@
 @page "/Destination/Edit/{id:int}"
 
 @inject IDestinationsRepository _DestinationRepository
+@inject IJSRuntime _JsRuntime
 @inject NavigationManager _NavigationManager
 
 <PageTitle>Destination: @Title</PageTitle>
@@ -86,11 +87,13 @@
         if(Id == 0)
         {
             await _DestinationRepository.Create(Destinations);
+            await _JsRuntime.ToastrSucess("Destination added sucessfully");
             _NavigationManager.NavigateTo("/Destination");
         }
         else
         {
             await _DestinationRepository.Update(Destinations);
+            await _JsRuntime.ToastrSucess("Destination updated sucessfully");
             _NavigationManager.NavigateTo("/Destination");
         }
 

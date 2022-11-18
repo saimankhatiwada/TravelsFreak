@@ -1,8 +1,10 @@
 ﻿@page "/Destination"
 @inject IDestinationsRepository _DestinationRepository
+@inject IJSRuntime _JsRuntime
 
 <PageTitle>Destination</PageTitle>
 
+<_DeleteConfirmation IsParentProcessingDelete="IsLoading" ConfirmationChanged="ConfirmDeleteForDestinationOnClick"></_DeleteConfirmation>
 <div class="row mt-4">
     <div class="col-6">
         <h4 class="card-title text-info">Destination List</h4>
@@ -33,7 +35,7 @@
                             </td>
                             <td>
                                 <NavLink href="@($"/Destination/Edit/{destination.Id}")" class="btn-primary btn">Edit</NavLink>
-                                <button class="btn btn-danger" >Delete</button>
+                                <button class="btn btn-danger" @onclick="()=>HandleDelete(destination.Id)">Delete</button>
                             </td>
                         </tr>
                     }
@@ -59,6 +61,27 @@
 @code {
     private IEnumerable<DestinationsDTO> Destinations { get; set; } = new List<DestinationsDTO>();
     public bool IsLoading { get; set; }
+    private int DeleteIdForDestination { get; set; } = 0;
+
+    private async void HandleDelete(int id)
+    {
+        DeleteIdForDestination = id;
+        await _JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+    public async Task ConfirmDeleteForDestinationOnClick(bool IsConfirmed)
+    {
+        IsLoading = true;
+        if(IsConfirmed && DeleteIdForDestination != 0)
+        {
+            await Task.Delay(2000);
+            await _DestinationRepository.Delete(DeleteIdForDestination);
+            await LoadDestination();
+            await _JsRuntime.InvokeVoidAsync("ShowHideConfirmationModal");
+            await _JsRuntime.ToastrSucess("Destination deleted successfully");
+        }
+        IsLoading = false;
+    }
 
     public async Task LoadDestination()
     {

@@ -54,7 +54,7 @@ namespace TravelsFreak.Repository
 
         public async Task<IEnumerable<DestinationsDTO>> GetAll()
         {
-            return _mapper.Map<IEnumerable<Destinations>, IEnumerable<DestinationsDTO>>(_db.Destinations);
+            return await Task.FromResult(_mapper.Map<IEnumerable<Destinations>, IEnumerable<DestinationsDTO>>(_db.Destinations));
         }
 
         public async Task<DestinationsDTO> Update(DestinationsDTO objectDTO)
