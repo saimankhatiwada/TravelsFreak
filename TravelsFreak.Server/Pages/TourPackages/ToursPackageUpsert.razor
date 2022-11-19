@@ -1,0 +1,170 @@
+﻿@page "/ToursPackage/Create"
+@page "/ToursPackage/Edit/{id:int}"
+
+@inject IDestinationsRepository _DestinationRepository
+@inject ITourPackageRepository _TourPackageRepository
+@inject IJSRuntime _JsRuntime
+@inject NavigationManager _NavigationManager
+@inject IFileUpload _FileUpload
+
+<PageTitle>Package: @Tittle</PageTitle>
+
+<div class="row my-2">
+    <h3 class="card-title text-primary mb-3 ml-3">Package: @Tittle</h3>
+
+    <div class="col-md-10">
+        @if (IsLoading)
+        {
+            <div class="text-center">
+                <img src="Loading/loading.gif">
+            </div>
+        }
+        else
+        {
+            <EditForm Model="TourPackage" OnValidSubmit="UpsertTourPackage">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label>Name</label>
+                    <InputSelect @bind-Value="TourPackage.DestinationsId" class="form-select">
+                        <option value="0" disabled="disabled" selected>--Select Destination--</option>
+                        @foreach (var destination in Destinations)
+                        {
+                            <option value="@destination.Id">@destination.DestinationTittle</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="()=>TourPackage.DestinationsId"></ValidationMessage>
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <InputNumber @bind-Value="TourPackage.Price" class="form-control"></InputNumber>
+                    <ValidationMessage For="()=>TourPackage.Price"></ValidationMessage>
+                </div>
+
+                <div class="form-group">
+                    <label>Days</label>
+                    <InputNumber @bind-Value="TourPackage.Days" class="form-control"></InputNumber>
+                    <ValidationMessage For="()=>TourPackage.Price"></ValidationMessage>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <SfRichTextEditor @bind-Value="TourPackage.TourPackageDescription"></SfRichTextEditor>
+                    <ValidationMessage For="()=>TourPackage.TourPackageDescription"></ValidationMessage>
+                </div>
+
+                <div class="row pt-3">
+                    <div class="form-group pt-4 col-6">
+                        <InputFile OnChange="HandleImageUpoad"></InputFile>
+                    </div>
+                </div>
+
+
+                <div class="form-group py-2">
+                    <button class="btn btn-primary">@Tittle</button>
+                    <NavLink href="/ToursPackage" class="btn btn-secondary">Back</NavLink>
+                </div>
+            </EditForm>
+        }
+    </div>
+    <div class="col-md-2">
+        <img src="@TourPackage.TourPackageImageUrl" class="w-100">
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private string Tittle { get; set; } = "Create";
+
+    public TourPackageDTO TourPackage { get; set; } = new TourPackageDTO()
+        {
+            TourPackageImageUrl = "/images/default.png"
+        };
+
+    public IEnumerable<DestinationsDTO> Destinations { get; set; } = new List<DestinationsDTO>();
+
+    public bool IsLoading { get; set; }
+
+    public string? OldImageUrl { get; set; }
+
+    private async Task LoadTourPackageById()
+    {
+        IsLoading = true;
+        StateHasChanged();
+        Destinations = await _DestinationRepository.GetAll();
+        if (Id != 0)
+        {
+            Tittle = "Update";
+            TourPackage = await _TourPackageRepository.Get(Id);
+            OldImageUrl = TourPackage.TourPackageImageUrl;
+        }
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadTourPackageById();
+        }
+    }
+
+    private async Task UpsertTourPackage()
+    {
+        bool IsImageChanged = false;
+
+        if (Id == 0)
+        {
+            await _TourPackageRepository.Create(TourPackage);
+            await _JsRuntime.ToastrSucess("TourPackage added sucessfully");
+            _NavigationManager.NavigateTo("/ToursPackage");
+        }
+        else
+        {
+            if (OldImageUrl != TourPackage.TourPackageImageUrl)
+            {
+                IsImageChanged = _FileUpload.DeleteFile(OldImageUrl);
+            }
+            await _TourPackageRepository.Update(TourPackage);
+            await _JsRuntime.ToastrSucess("TourPackage updated sucessfully");
+            if (IsImageChanged)
+            {
+                await _JsRuntime.ToastrSucess("ToursPackage image updated sucessfully");
+                IsImageChanged = false;
+            }
+            _NavigationManager.NavigateTo("/ToursPackage");
+        }
+
+    }
+
+    private async Task HandleImageUpoad(InputFileChangeEventArgs e)
+    {
+        IsLoading = true;
+        try
+        {
+            if (e.GetMultipleFiles().Count > 0)
+            {
+                foreach (var file in e.GetMultipleFiles())
+                {
+                    System.IO.FileInfo fileInfo = new System.IO.FileInfo(file.Name);
+                    if (fileInfo.Extension.ToLower() == ".jpg" || fileInfo.Extension.ToLower() == ".png" || fileInfo.Extension.ToLower() == ".jpeg")
+                    {
+                        TourPackage.TourPackageImageUrl = await _FileUpload.UploadFile(file);
+                    }
+                    else
+                    {
+                        await _JsRuntime.ToastrError("Please select .jpg/.jpeg/.png file only");
+                    }
+                }
+            }
+            IsLoading = false;
+        }
+        catch (Exception ex)
+        {
+            await _JsRuntime.ToastrError(ex.Message);
+        }
+    }
+}

@@ -74,7 +74,6 @@
         IsLoading = true;
         if(IsConfirmed && DeleteIdForDestination != 0)
         {
-            await Task.Delay(2000);
             await _DestinationRepository.Delete(DeleteIdForDestination);
             await LoadDestination();
             await _JsRuntime.InvokeVoidAsync("ShowHideConfirmationModal");

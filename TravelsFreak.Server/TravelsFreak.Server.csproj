@@ -9,8 +9,8 @@
   <ItemGroup>
     <Folder Include="Pages\Inquiry\" />
     <Folder Include="Pages\Blog\" />
-    <Folder Include="Pages\TourPackages\" />
     <Folder Include="wwwroot\Loading\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +20,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+    <PackageReference Include="Syncfusion.Blazor.Grid" Version="20.3.0.57" />
+    <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="20.3.0.57" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="20.3.0.57" />
   </ItemGroup>
 
   <ItemGroup>

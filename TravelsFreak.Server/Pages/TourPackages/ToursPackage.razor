@@ -1,0 +1,118 @@
+﻿@page "/ToursPackage"
+
+@inject ITourPackageRepository _TourPackageRepository
+@inject IJSRuntime _JsRuntime
+@inject IFileUpload _FileUpload
+
+<PageTitle>Package</PageTitle>
+
+<_DeleteConfirmation IsParentProcessingDelete="IsLoading" ConfirmationChanged="ConfirmDeleteForTourPackageOnClick"></_DeleteConfirmation>
+<div class="row mt-4">
+    <div class="col-6">
+        <h4 class="card-title text-info">Package List</h4>
+    </div>
+    <div class="col-4 offset-2">
+        <NavLink href="/ToursPackage/Create" class="btn btn-info shadow-sm form-control" style="border:2px solid #0d1b6b">Add New Package</NavLink>
+    </div>
+    <div class="col-12 p-3">
+        @if (tourPackages.Any())
+        {
+            <table class="table table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Days</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tp in tourPackages)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@tp.TourPackageImageUrl" class="rounded" width="75" height="50">
+                            </td>
+                            <td>
+                                @tp.Destinations.DestinationTittle
+                            </td>
+                            <td>
+                                @tp.Price
+                            </td>
+                            <td>
+                                @tp.Days
+                            </td>
+                            <td>
+                                <NavLink href="@($"/ToursPackage/Edit/{tp.Id}")" class="btn-primary btn">Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="()=>HandleDelete(tp.Id)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            if (IsLoading)
+            {
+                <div class="text-center">
+                    <img src="Loading/loading.gif">
+                </div>
+            }
+            else
+            {
+                <p class="alert">No records Found</p>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private IEnumerable<TourPackageDTO> tourPackages { get; set; } = new List<TourPackageDTO>();
+    public bool IsLoading { get; set; }
+    private int DeleteIdForTourPackage { get; set; } = 0;
+
+    private async void HandleDelete(int id)
+    {
+        DeleteIdForTourPackage = id;
+        await _JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+    public async Task ConfirmDeleteForTourPackageOnClick(bool IsConfirmed)
+    {
+        IsLoading = true;
+        if (IsConfirmed && DeleteIdForTourPackage != 0)
+        {
+            TourPackageDTO tourPackage = await _TourPackageRepository.Get(DeleteIdForTourPackage);
+            if (!tourPackage.TourPackageImageUrl.Contains("default.png"))
+            {
+                _FileUpload.DeleteFile(tourPackage.TourPackageImageUrl);
+            }
+
+            await _TourPackageRepository.Delete(DeleteIdForTourPackage);
+            await LoadTourPackage();
+            await _JsRuntime.InvokeVoidAsync("ShowHideConfirmationModal");
+            await _JsRuntime.ToastrSucess("TourPackage deleted successfully");
+        }
+        IsLoading = false;
+    }
+
+    public async Task LoadTourPackage()
+    {
+        IsLoading = true;
+        StateHasChanged();
+        tourPackages = await _TourPackageRepository.GetAll();
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadTourPackage();
+        }
+    }
+}

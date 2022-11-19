@@ -15,5 +15,6 @@ namespace TravelsFreak.Data.DatabaseContext
         }
 
         public DbSet<Destinations> Destinations { get; set; }
+        public DbSet<TourPackage> TourPackages { get; set; }
     }
 }

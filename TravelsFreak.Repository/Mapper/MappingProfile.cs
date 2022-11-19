@@ -13,7 +13,8 @@ namespace TravelsFreak.Repository.Mapper
     {
         public MappingProfile()
         {
-            CreateMap<Destinations,DestinationsDTO>().ReverseMap();
+            CreateMap<Destinations, DestinationsDTO>().ReverseMap();
+            CreateMap<TourPackage, TourPackageDTO>().ReverseMap();
         }
     }
 }
