@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelsFreak.Repository", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelsFreak.Common", "TravelsFreak.Common\TravelsFreak.Common.csproj", "{952BE2EB-5A2A-4A82-98C5-C134199A187B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelFreak.API", "TravelFreak.API\TravelFreak.API.csproj", "{36FA17A6-8742-449C-BE6D-C6E20A069619}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelFreak.API", "TravelFreak.API\TravelFreak.API.csproj", "{36FA17A6-8742-449C-BE6D-C6E20A069619}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelFreak.Client", "TravelFreak.Client\TravelFreak.Client.csproj", "{C769ED1A-52CC-4C2B-8CC6-E59A32C0D9B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{36FA17A6-8742-449C-BE6D-C6E20A069619}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36FA17A6-8742-449C-BE6D-C6E20A069619}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36FA17A6-8742-449C-BE6D-C6E20A069619}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C769ED1A-52CC-4C2B-8CC6-E59A32C0D9B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C769ED1A-52CC-4C2B-8CC6-E59A32C0D9B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C769ED1A-52CC-4C2B-8CC6-E59A32C0D9B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C769ED1A-52CC-4C2B-8CC6-E59A32C0D9B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
