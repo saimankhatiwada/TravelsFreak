@@ -66,6 +66,7 @@ namespace TravelsFreak.Repository
                 objFromDb.Days = objectDTO.Days;
                 objFromDb.TourPackageDescription= objectDTO.TourPackageDescription;
                 objFromDb.TourPackageImageUrl= objectDTO.TourPackageImageUrl;
+                objFromDb.TourPackageLocation= objectDTO.TourPackageLocation;
                 objFromDb.DestinationsId = objectDTO.DestinationsId;
                 _db.TourPackages.Update(objFromDb);
                 await _db.SaveChangesAsync();

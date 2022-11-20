@@ -21,6 +21,7 @@ namespace TravelsFreak.Models.DataTransferObject
 
         [Required(ErrorMessage ="Please enter description...")]
         public string? TourPackageDescription { get; set; }
+        public string? TourPackageLocation { get; set; }
 
         [Required]
         public string? TourPackageImageUrl { get; set; }

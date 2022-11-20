@@ -15,7 +15,7 @@ namespace TravelsFreak.Data
         public double Price { get; set; }
         public int Days { get; set; }
         public string? TourPackageDescription { get; set; }
-
+        public string? TourPackageLocation { get; set; }
         public string? TourPackageImageUrl { get; set; }
         public int DestinationsId { get; set; }
         [ForeignKey("DestinationsId")]
