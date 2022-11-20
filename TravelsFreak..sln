@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelsFreak.Repository", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelsFreak.Common", "TravelsFreak.Common\TravelsFreak.Common.csproj", "{952BE2EB-5A2A-4A82-98C5-C134199A187B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelFreak.API", "TravelFreak.API\TravelFreak.API.csproj", "{36FA17A6-8742-449C-BE6D-C6E20A069619}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{952BE2EB-5A2A-4A82-98C5-C134199A187B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{952BE2EB-5A2A-4A82-98C5-C134199A187B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{952BE2EB-5A2A-4A82-98C5-C134199A187B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36FA17A6-8742-449C-BE6D-C6E20A069619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36FA17A6-8742-449C-BE6D-C6E20A069619}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36FA17A6-8742-449C-BE6D-C6E20A069619}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36FA17A6-8742-449C-BE6D-C6E20A069619}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
