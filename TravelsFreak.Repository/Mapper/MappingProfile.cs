@@ -15,6 +15,7 @@ namespace TravelsFreak.Repository.Mapper
         {
             CreateMap<Destinations, DestinationsDTO>().ReverseMap();
             CreateMap<TourPackage, TourPackageDTO>().ReverseMap();
+            CreateMap<Blog, BlogDTO>().ReverseMap();
         }
     }
 }

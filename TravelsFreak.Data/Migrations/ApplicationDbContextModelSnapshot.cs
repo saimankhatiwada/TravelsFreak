@@ -21,6 +21,33 @@ namespace TravelsFreak.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("TravelsFreak.Data.Blog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BlogDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BlogImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BlogTittle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DestinationsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationsId");
+
+                    b.ToTable("Blogs");
+                });
+
             modelBuilder.Entity("TravelsFreak.Data.Destinations", b =>
                 {
                     b.Property<int>("Id")
@@ -71,6 +98,17 @@ namespace TravelsFreak.Data.Migrations
                     b.HasIndex("DestinationsId");
 
                     b.ToTable("TourPackages");
+                });
+
+            modelBuilder.Entity("TravelsFreak.Data.Blog", b =>
+                {
+                    b.HasOne("TravelsFreak.Data.Destinations", "Destinations")
+                        .WithMany()
+                        .HasForeignKey("DestinationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Destinations");
                 });
 
             modelBuilder.Entity("TravelsFreak.Data.TourPackage", b =>

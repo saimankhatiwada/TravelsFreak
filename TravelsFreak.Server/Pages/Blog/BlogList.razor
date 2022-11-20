@@ -1,0 +1,110 @@
+﻿@page "/Blog"
+
+@inject IBlogRepository _BlogRepository
+@inject IJSRuntime _JsRuntime
+@inject IFileUpload _FileUpload
+
+<PageTitle>Blog</PageTitle>
+
+<_DeleteConfirmation IsParentProcessingDelete="IsLoading" ConfirmationChanged="ConfirmDeleteForBlogOnClick"></_DeleteConfirmation>
+<div class="row mt-4">
+    <div class="col-6">
+        <h4 class="card-title text-info">Package List</h4>
+    </div>
+    <div class="col-4 offset-2">
+        <NavLink href="/Blog/Create" class="btn btn-info shadow-sm form-control" style="border:2px solid #0d1b6b">Add New Package</NavLink>
+    </div>
+    <div class="col-12 p-3">
+        @if (Blogs.Any())
+        {
+            <table class="table table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var blog in Blogs)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@blog.BlogImageUrl" class="rounded" width="75" height="50">
+                            </td>
+                            <td>
+                                @blog.BlogTittle
+                            </td>
+                            <td>
+                                <NavLink href="@($"/Blog/Edit/{blog.Id}")" class="btn-primary btn">Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="()=>HandleDelete(blog.Id)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            if (IsLoading)
+            {
+                <div class="text-center">
+                    <img src="Loading/loading.gif">
+                </div>
+            }
+            else
+            {
+                <p class="alert">No records Found</p>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private IEnumerable<BlogDTO> Blogs { get; set; } = new List<BlogDTO>();
+    public bool IsLoading { get; set; }
+    private int DeleteIdForBlog { get; set; } = 0;
+
+    private async void HandleDelete(int id)
+    {
+        DeleteIdForBlog = id;
+        await _JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+    public async Task ConfirmDeleteForBlogOnClick(bool IsConfirmed)
+    {
+        IsLoading = true;
+        if (IsConfirmed && DeleteIdForBlog != 0)
+        {
+            BlogDTO blogs = await _BlogRepository.Get(DeleteIdForBlog);
+            if (!blogs.BlogImageUrl.Contains("default.png"))
+            {
+                _FileUpload.DeleteFile(blogs.BlogImageUrl);
+            }
+
+            await _BlogRepository.Delete(DeleteIdForBlog);
+            await LoadBlog();
+            await _JsRuntime.InvokeVoidAsync("ShowHideConfirmationModal");
+            await _JsRuntime.ToastrSucess("Blog deleted successfully");
+        }
+        IsLoading = false;
+    }
+
+    public async Task LoadBlog()
+    {
+        IsLoading = true;
+        StateHasChanged();
+        Blogs = await _BlogRepository.GetAll();
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadBlog();
+        }
+    }
+}

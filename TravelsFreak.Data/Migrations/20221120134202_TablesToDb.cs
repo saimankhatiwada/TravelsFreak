@@ -25,6 +25,28 @@ namespace TravelsFreak.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Blogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BlogDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BlogImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BlogTittle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DestinationsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blogs_Destinations_DestinationsId",
+                        column: x => x.DestinationsId,
+                        principalTable: "Destinations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TourPackages",
                 columns: table => new
                 {
@@ -33,6 +55,7 @@ namespace TravelsFreak.Data.Migrations
                     Price = table.Column<double>(type: "float", nullable: false),
                     Days = table.Column<int>(type: "int", nullable: false),
                     TourPackageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TourPackageLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TourPackageImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DestinationsId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -48,6 +71,11 @@ namespace TravelsFreak.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Blogs_DestinationsId",
+                table: "Blogs",
+                column: "DestinationsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TourPackages_DestinationsId",
                 table: "TourPackages",
                 column: "DestinationsId");
@@ -56,6 +84,9 @@ namespace TravelsFreak.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Blogs");
+
             migrationBuilder.DropTable(
                 name: "TourPackages");
 

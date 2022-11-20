@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\Inquiry\" />
-    <Folder Include="Pages\Blog\" />
     <Folder Include="wwwroot\Loading\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>

@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 builder.Services.AddScoped<IDestinationsRepository, DestinationsRepository>();
 builder.Services.AddScoped<ITourPackageRepository, TourPackageRepository>();
+builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<IFileUpload, FileUpload>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

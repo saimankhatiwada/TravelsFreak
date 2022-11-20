@@ -11,8 +11,8 @@ using TravelsFreak.Data.DatabaseContext;
 namespace TravelsFreak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221120082000_tableupdateTourPackage")]
-    partial class tableupdateTourPackage
+    [Migration("20221120134202_TablesToDb")]
+    partial class TablesToDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,33 @@ namespace TravelsFreak.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("TravelsFreak.Data.Blog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BlogDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BlogImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BlogTittle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DestinationsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationsId");
+
+                    b.ToTable("Blogs");
+                });
 
             modelBuilder.Entity("TravelsFreak.Data.Destinations", b =>
                 {
@@ -74,6 +101,17 @@ namespace TravelsFreak.Data.Migrations
                     b.HasIndex("DestinationsId");
 
                     b.ToTable("TourPackages");
+                });
+
+            modelBuilder.Entity("TravelsFreak.Data.Blog", b =>
+                {
+                    b.HasOne("TravelsFreak.Data.Destinations", "Destinations")
+                        .WithMany()
+                        .HasForeignKey("DestinationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Destinations");
                 });
 
             modelBuilder.Entity("TravelsFreak.Data.TourPackage", b =>

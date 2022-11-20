@@ -1,8 +1,8 @@
-﻿@page "/ToursPackage/Create"
-@page "/ToursPackage/Edit/{id:int}"
+﻿@page "/Blog/Create"
+@page "/Blog/Edit/{id:int}"
 
 @inject IDestinationsRepository _DestinationRepository
-@inject ITourPackageRepository _TourPackageRepository
+@inject IBlogRepository _BlogRepository
 @inject IJSRuntime _JsRuntime
 @inject NavigationManager _NavigationManager
 @inject IFileUpload _FileUpload
@@ -21,46 +21,29 @@
         }
         else
         {
-            <EditForm Model="TourPackage" OnValidSubmit="UpsertTourPackage">
+            <EditForm Model="Blogs" OnValidSubmit="UpsertBlog">
                 <DataAnnotationsValidator />
                 <div class="form-group">
                     <label>Name</label>
-                    <InputSelect @bind-Value="TourPackage.DestinationsId" class="form-select">
-                        <option value="0" disabled="disabled" selected>--Select Destination--</option>
-                        @foreach (var destination in Destinations)
-                        {
-                            <option value="@destination.Id">@destination.DestinationTittle</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="()=>TourPackage.DestinationsId"></ValidationMessage>
+                    <InputText @bind-Value="Blogs.BlogTittle" class="form-select"></InputText>
+                    <ValidationMessage For="()=>Blogs.BlogTittle"></ValidationMessage>
                 </div>
                 <div class="form-group">
                     <label>Location</label>
-                    <InputSelect @bind-Value="TourPackage.TourPackageLocation" class="form-select">
+                    <InputSelect @bind-Value="Blogs.DestinationsId" class="form-select">
                         <option value="0" disabled="disabled" selected>--Select Location--</option>
                         @foreach (var destination in Destinations)
                         {
-                            <option value="@destination.Location">@destination.Location</option>
+                            <option value="@destination.Id">@destination.Location</option>
                         }
                     </InputSelect>
-                </div>
-
-                <div class="form-group">
-                    <label>Price</label>
-                    <InputNumber @bind-Value="TourPackage.Price" class="form-control"></InputNumber>
-                    <ValidationMessage For="()=>TourPackage.Price"></ValidationMessage>
-                </div>
-
-                <div class="form-group">
-                    <label>Days</label>
-                    <InputNumber @bind-Value="TourPackage.Days" class="form-control"></InputNumber>
-                    <ValidationMessage For="()=>TourPackage.Price"></ValidationMessage>
+                    <ValidationMessage For="()=>Blogs.DestinationsId"></ValidationMessage>
                 </div>
 
                 <div class="form-group">
                     <label>Description</label>
-                    <SfRichTextEditor @bind-Value="TourPackage.TourPackageDescription"></SfRichTextEditor>
-                    <ValidationMessage For="()=>TourPackage.TourPackageDescription"></ValidationMessage>
+                    <SfRichTextEditor @bind-Value="Blogs.BlogDescription"></SfRichTextEditor>
+                    <ValidationMessage For="()=>Blogs.BlogDescription"></ValidationMessage>
                 </div>
 
                 <div class="row pt-3">
@@ -72,13 +55,13 @@
 
                 <div class="form-group py-2">
                     <button class="btn btn-primary">@Tittle</button>
-                    <NavLink href="/ToursPackage" class="btn btn-secondary">Back</NavLink>
+                    <NavLink href="/Blog" class="btn btn-secondary">Back</NavLink>
                 </div>
             </EditForm>
         }
     </div>
     <div class="col-md-2">
-        <img src="@TourPackage.TourPackageImageUrl" class="w-100">
+        <img src="@Blogs.BlogImageUrl" class="w-100">
     </div>
 </div>
 
@@ -87,13 +70,13 @@
     [Parameter]
     public int Id { get; set; }
 
-    private string FolderName = "TourPackageImages";
+    private string FolderName = "BlogsImages";
 
     private string Tittle { get; set; } = "Create";
 
-    public TourPackageDTO TourPackage { get; set; } = new TourPackageDTO()
+    public BlogDTO Blogs { get; set; } = new BlogDTO()
         {
-            TourPackageImageUrl = "/images/default.png"
+            BlogImageUrl = "/images/default.png"
         };
 
     public IEnumerable<DestinationsDTO> Destinations { get; set; } = new List<DestinationsDTO>();
@@ -102,7 +85,7 @@
 
     public string? OldImageUrl { get; set; }
 
-    private async Task LoadTourPackageById()
+    private async Task LoadBlogById()
     {
         IsLoading = true;
         StateHasChanged();
@@ -110,8 +93,8 @@
         if (Id != 0)
         {
             Tittle = "Update";
-            TourPackage = await _TourPackageRepository.Get(Id);
-            OldImageUrl = TourPackage.TourPackageImageUrl;
+            Blogs = await _BlogRepository.Get(Id);
+            OldImageUrl = Blogs.BlogImageUrl;
         }
         IsLoading = false;
         StateHasChanged();
@@ -121,28 +104,28 @@
     {
         if (firstRender)
         {
-            await LoadTourPackageById();
+            await LoadBlogById();
         }
     }
 
-    private async Task UpsertTourPackage()
+    private async Task UpsertBlog()
     {
 
         if (Id == 0)
         {
-            await _TourPackageRepository.Create(TourPackage);
-            await _JsRuntime.ToastrSucess("TourPackage added sucessfully");
-            _NavigationManager.NavigateTo("/ToursPackage");
+            await _BlogRepository.Create(Blogs);
+            await _JsRuntime.ToastrSucess("Blog added sucessfully");
+            _NavigationManager.NavigateTo("/Blog");
         }
         else
         {
-            if (OldImageUrl != TourPackage.TourPackageImageUrl)
+            if (OldImageUrl != Blogs.BlogImageUrl)
             {
                 _FileUpload.DeleteFile(OldImageUrl);
             }
-            await _TourPackageRepository.Update(TourPackage);
-            await _JsRuntime.ToastrSucess("TourPackage updated sucessfully");
-            _NavigationManager.NavigateTo("/ToursPackage");
+            await _BlogRepository.Update(Blogs);
+            await _JsRuntime.ToastrSucess("Blog updated sucessfully");
+            _NavigationManager.NavigateTo("/Blog");
         }
 
     }
@@ -159,8 +142,8 @@
                     System.IO.FileInfo fileInfo = new System.IO.FileInfo(file.Name);
                     if (fileInfo.Extension.ToLower() == ".jpg" || fileInfo.Extension.ToLower() == ".png" || fileInfo.Extension.ToLower() == ".jpeg")
                     {
-                        TourPackage.TourPackageImageUrl = await _FileUpload.UploadFile(file, FolderName);
-                        if(TourPackage.TourPackageImageUrl != null && TourPackage.TourPackageImageUrl != OldImageUrl)
+                        Blogs.BlogImageUrl = await _FileUpload.UploadFile(file, FolderName);
+                        if(Blogs.BlogImageUrl != null && Blogs.BlogImageUrl != OldImageUrl)
                         {
                             await _JsRuntime.ToastrSucess("Image updated sucessfully");
                         }

@@ -23,11 +23,11 @@ namespace TravelsFreak.Server.Service
             return false;
         }
 
-        public async Task<string> UploadFile(IBrowserFile file)
+        public async Task<string> UploadFile(IBrowserFile file, string folder)
         {
             FileInfo fileInfo = new(file.Name);
             var fileName = Guid.NewGuid().ToString() + fileInfo.Extension;
-            var folderDirectory = $"{_WebHostEnviroment.WebRootPath}\\images\\ToursPackage";
+            var folderDirectory = $"{_WebHostEnviroment.WebRootPath}\\images\\{folder}";
             if(!Directory.Exists(folderDirectory))
             {
                 Directory.CreateDirectory(folderDirectory);
@@ -35,7 +35,7 @@ namespace TravelsFreak.Server.Service
             var filePath = Path.Combine(folderDirectory, fileName);
             await using FileStream fs = new FileStream(filePath, FileMode.Create);
             await file.OpenReadStream().CopyToAsync(fs);
-            var fullPath = $"/images/ToursPackage/{fileName}";
+            var fullPath = $"/images/{folder}/{fileName}";
             return fullPath;
         }
     }
