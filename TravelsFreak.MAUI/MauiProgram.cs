@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using TravelsFreak.MAUI.Data;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using TravelFreak.Client.Service;
+using TravelsFreak.MAUI.Service.IService;
 
 namespace TravelsFreak.MAUI
 {
@@ -22,7 +24,8 @@ namespace TravelsFreak.MAUI
 		builder.Logging.AddDebug();
 #endif
 
-            builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7228") });
+            builder.Services.AddScoped<ITourPackageService, TourPackageService>();
 
             return builder.Build();
         }

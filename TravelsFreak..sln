@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelFreak.API", "TravelFr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelFreak.Client", "TravelFreak.Client\TravelFreak.Client.csproj", "{C769ED1A-52CC-4C2B-8CC6-E59A32C0D9B5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelsFreak.MAUI", "TravelsFreak.MAUI\TravelsFreak.MAUI.csproj", "{D41675D9-F115-42CD-85F9-EE86B2CF2CA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,12 @@ Global
 		{C769ED1A-52CC-4C2B-8CC6-E59A32C0D9B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C769ED1A-52CC-4C2B-8CC6-E59A32C0D9B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C769ED1A-52CC-4C2B-8CC6-E59A32C0D9B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D41675D9-F115-42CD-85F9-EE86B2CF2CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D41675D9-F115-42CD-85F9-EE86B2CF2CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D41675D9-F115-42CD-85F9-EE86B2CF2CA5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D41675D9-F115-42CD-85F9-EE86B2CF2CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D41675D9-F115-42CD-85F9-EE86B2CF2CA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D41675D9-F115-42CD-85F9-EE86B2CF2CA5}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
