@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TravelsFreak.Models.Status;
 using TravelsFreak.Repository.IRepository;
 
@@ -25,7 +24,7 @@ namespace TravelFreak.API.Controllers
         [HttpGet("{TourPackageId}")]
         public async Task<IActionResult> Get(int? TourPackageId)
         {
-            if(TourPackageId == 0)
+            if (TourPackageId == 0)
             {
                 return BadRequest(new ErrorModelDTO()
                 {
@@ -35,7 +34,7 @@ namespace TravelFreak.API.Controllers
             }
 
             var tourpackage = await _TourPackageRepository.Get(TourPackageId.Value);
-            if(tourpackage == null)
+            if (tourpackage == null)
             {
                 return BadRequest(new ErrorModelDTO()
                 {

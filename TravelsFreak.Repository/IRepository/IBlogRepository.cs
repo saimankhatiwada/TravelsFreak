@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TravelsFreak.Models.DataTransferObject;
+﻿using TravelsFreak.Models.DataTransferObject;
 
 namespace TravelsFreak.Repository.IRepository
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using TravelsFreak.Data;
 
 namespace TravelsFreak.Models.DataTransferObject
@@ -13,7 +7,7 @@ namespace TravelsFreak.Models.DataTransferObject
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="please enter description...")]
+        [Required(ErrorMessage = "please enter description...")]
         public string? BlogDescription { get; set; }
 
         [Required(ErrorMessage = "please enter description...")]
@@ -22,7 +16,7 @@ namespace TravelsFreak.Models.DataTransferObject
         [Required(ErrorMessage = "please enter description...")]
         public string? BlogTittle { get; set; }
 
-        [Range(1,int.MaxValue,ErrorMessage ="Please enter destination...")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter destination...")]
         public int DestinationsId { get; set; }
         public Destinations? Destinations { get; set; }
     }

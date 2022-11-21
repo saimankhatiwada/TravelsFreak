@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
 using TravelsFreak.Data.DatabaseContext;
 using TravelsFreak.Repository;
 using TravelsFreak.Repository.IRepository;
-using TravelsFreak.Server.Service.IService;
 using TravelsFreak.Server.Service;
+using TravelsFreak.Server.Service.IService;
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NzU1Nzk2QDMyMzAyZTMzMmUzMEJsM1RGTUZjVm5RS3A4dGRaSEVzaVh0czNkVjFEbktsMEgrb0dtYUpOSzA9");
 

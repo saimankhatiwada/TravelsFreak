@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Text.Json.Serialization;
 using TravelFreak.Client.Service.IService;
 using TravelsFreak.Models.DataTransferObject;
 using TravelsFreak.Models.Status;
@@ -38,13 +37,13 @@ namespace TravelFreak.Client.Service
         public async Task<IEnumerable<TourPackageDTO>> GetAll()
         {
             var response = await _httpClient.GetAsync("/api/TourPackage");
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var tourpackages = JsonConvert.DeserializeObject<IEnumerable<TourPackageDTO>>(content);
-                foreach(var tp in tourpackages)
+                foreach (var tp in tourpackages)
                 {
-                    tp.TourPackageImageUrl = BaseServerURL + tp.TourPackageImageUrl; 
+                    tp.TourPackageImageUrl = BaseServerURL + tp.TourPackageImageUrl;
                 }
                 return tourpackages;
             }

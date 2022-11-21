@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TravelsFreak.Data;
 using TravelsFreak.Data.DatabaseContext;
 using TravelsFreak.Models.DataTransferObject;
@@ -34,7 +29,7 @@ namespace TravelsFreak.Repository
         public async Task<int> Delete(int id)
         {
             var obj = await _db.Destinations.FirstOrDefaultAsync(x => x.Id == id);
-            if(obj != null)
+            if (obj != null)
             {
                 _db.Destinations.Remove(obj);
                 return await _db.SaveChangesAsync();
@@ -45,9 +40,9 @@ namespace TravelsFreak.Repository
         public async Task<DestinationsDTO> Get(int id)
         {
             var obj = await _db.Destinations.FirstOrDefaultAsync(x => x.Id == id);
-            if(obj != null)
+            if (obj != null)
             {
-                return _mapper.Map<Destinations,DestinationsDTO>(obj);
+                return _mapper.Map<Destinations, DestinationsDTO>(obj);
             }
             return new DestinationsDTO();
         }
@@ -60,13 +55,13 @@ namespace TravelsFreak.Repository
         public async Task<DestinationsDTO> Update(DestinationsDTO objectDTO)
         {
             var objFromDb = await _db.Destinations.FirstOrDefaultAsync(x => x.Id == objectDTO.Id);
-            if(objFromDb!= null)
+            if (objFromDb != null)
             {
                 objFromDb.DestinationTittle = objectDTO.DestinationTittle;
                 objFromDb.Location = objectDTO.Location;
                 _db.Destinations.Update(objFromDb);
                 await _db.SaveChangesAsync();
-                return _mapper.Map<Destinations,DestinationsDTO>(objFromDb);
+                return _mapper.Map<Destinations, DestinationsDTO>(objFromDb);
             }
             return objectDTO;
         }

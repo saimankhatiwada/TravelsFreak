@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Hosting;
 using TravelsFreak.Server.Service.IService;
 
 namespace TravelsFreak.Server.Service
@@ -15,7 +14,7 @@ namespace TravelsFreak.Server.Service
 
         public bool DeleteFile(string filePath)
         {
-            if(File.Exists(_WebHostEnviroment.WebRootPath + filePath))
+            if (File.Exists(_WebHostEnviroment.WebRootPath + filePath))
             {
                 File.Delete(_WebHostEnviroment.WebRootPath + filePath);
                 return true;
@@ -28,7 +27,7 @@ namespace TravelsFreak.Server.Service
             FileInfo fileInfo = new(file.Name);
             var fileName = Guid.NewGuid().ToString() + fileInfo.Extension;
             var folderDirectory = $"{_WebHostEnviroment.WebRootPath}\\images\\{folder}";
-            if(!Directory.Exists(folderDirectory))
+            if (!Directory.Exists(folderDirectory))
             {
                 Directory.CreateDirectory(folderDirectory);
             }

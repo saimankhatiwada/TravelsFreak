@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TravelsFreak.Data.DatabaseContext;
-using TravelsFreak.Repository.IRepository;
 using TravelsFreak.Repository;
+using TravelsFreak.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 

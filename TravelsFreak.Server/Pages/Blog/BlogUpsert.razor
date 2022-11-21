@@ -7,10 +7,10 @@
 @inject NavigationManager _NavigationManager
 @inject IFileUpload _FileUpload
 
-<PageTitle>Package: @Tittle</PageTitle>
+<PageTitle>Blog: @Tittle</PageTitle>
 
 <div class="row my-2">
-    <h3 class="card-title text-primary mb-3 ml-3">Package: @Tittle</h3>
+    <h3 class="card-title text-primary mb-3 ml-3">Blog: @Tittle</h3>
 
     <div class="col-md-10">
         @if (IsLoading)
@@ -25,7 +25,7 @@
                 <DataAnnotationsValidator />
                 <div class="form-group">
                     <label>Name</label>
-                    <InputText @bind-Value="Blogs.BlogTittle" class="form-select"></InputText>
+                    <InputText @bind-Value="Blogs.BlogTittle" class="form-control"></InputText>
                     <ValidationMessage For="()=>Blogs.BlogTittle"></ValidationMessage>
                 </div>
                 <div class="form-group">
