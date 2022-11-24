@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TravelFreak.Client.Service;
+using TravelsFreak.MAUI.Service;
 using TravelsFreak.MAUI.Service.IService;
 
 namespace TravelsFreak.MAUI
@@ -26,6 +27,7 @@ namespace TravelsFreak.MAUI
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7228") });
             builder.Services.AddScoped<ITourPackageService, TourPackageService>();
+            builder.Services.AddScoped<IBlogService, BlogService>();
 
             return builder.Build();
         }
