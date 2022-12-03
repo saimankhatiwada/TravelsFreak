@@ -10,5 +10,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration.GetValue<string>("BaseAPIUrl")) });
 builder.Services.AddScoped<ITourPackageService, TourPackageService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
 
 await builder.Build().RunAsync();
